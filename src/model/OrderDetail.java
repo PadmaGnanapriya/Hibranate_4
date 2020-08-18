@@ -1,11 +1,15 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
  */
 
-
+@Entity
 public class OrderDetail {
+    @Id
     private String orderId;
     private String itemCode;
     private int orderQty;

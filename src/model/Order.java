@@ -1,13 +1,16 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.ArrayList;
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
  */
 
-
+@Entity
 public class Order {
+    @Id
     private String orderId;
     private String orderDate;
     private String customerId;
