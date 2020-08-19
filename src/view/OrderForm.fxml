@@ -66,11 +66,6 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtCustomerId" layoutX="175.0" layoutY="133.0" prefHeight="38.0" prefWidth="130.0">
-         <font>
-            <Font name="System Bold Italic" size="17.0" />
-         </font>
-      </TextField>
       <TextField fx:id="txtDescription" editable="false" layoutX="175.0" layoutY="222.0" prefHeight="38.0" prefWidth="210.0">
          <font>
             <Font name="System Bold Italic" size="17.0" />
@@ -136,10 +131,11 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </TextField>
-      <Button fx:id="AddCustomerPerform" layoutX="315.0" layoutY="132.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="68.0" text="New">
+      <Button layoutX="315.0" layoutY="132.0" mnemonicParsing="false" onAction="#AddCustomerPerform" prefHeight="39.0" prefWidth="68.0" text="New">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
+      <ComboBox fx:id="cmbCustomerId" layoutX="175.0" layoutY="133.0" onAction="#CustomerID_onAction" prefHeight="38.0" prefWidth="130.0" />
    </children>
 </AnchorPane>
