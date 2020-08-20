@@ -10,6 +10,8 @@ import model.OrderDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +53,42 @@ public class OrderForm {
 
 
     public void AddButtonPerform(ActionEvent actionEvent) {
+//        DefaultTableModel dtm = myTable.getDefacModel();
+//
+        int qty = Integer.parseInt(txtQty.getText());
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        double total = unitPrice * qty;
 
+        int row = isAlreadyExist(cmbItemCode.getValue().toString());
+
+        if (row == -1) {
+//            Object[] rowData = {cmbItemCode.getValue().toString(), txtDescription.getText(), qty, unitPrice, total};
+//            dtm.addRow(rowData);
+            colDescription.setText(txtDescription.getText());
+            colQty.setText(String.valueOf(qty));
+            colUnitPrice.setText(String.valueOf(unitPrice));
+            colTotal.setText(String.valueOf(total));
+            colCode.setText(cmbItemCode.getValue().toString());
+
+//            myTable.setItems("SS");
+
+        } else {
+//            qty += (int) dtm.getValueAt(row, 2);
+//            total = qty * unitPrice;
+//
+//            txtItemDetails.setValueAt(qty, row, 2);
+//            tblItemDetails.setValueAt(total, row, 4);
+        }
+
+        cmbItemCode.requestFocus();
+        calculateTotal();
+    }
+
+    private void calculateTotal() {
+    }
+
+    private int isAlreadyExist(String toString) {
+        return -1;
     }
 
     public void RomovePerform(ActionEvent actionEvent) {
@@ -130,4 +167,13 @@ public class OrderForm {
 //
 
     }
+
+    public void ItemCode_onAction(ActionEvent actionEvent) {
+        String itemCode=cmbItemCode.getValue().toString();
+        Item item=ItemController.searchItem(itemCode);
+        txtDescription.setText(item.getDescription());
+        txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
+        txtQuentityOnHand.setText(String.valueOf(item.getQtyOnHand()));
+    }
+
 }

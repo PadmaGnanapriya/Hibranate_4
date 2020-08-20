@@ -61,7 +61,7 @@
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="txtOrderId" layoutX="175.0" layoutY="85.0" prefHeight="38.0" prefWidth="80.0">
+      <TextField fx:id="txtOrderId" editable="false" layoutX="175.0" layoutY="85.0" prefHeight="38.0" prefWidth="80.0">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
@@ -81,7 +81,7 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtQty" editable="false" layoutX="728.0" layoutY="221.0" prefHeight="38.0" prefWidth="113.0">
+      <TextField fx:id="txtQty" layoutX="728.0" layoutY="221.0" prefHeight="38.0" prefWidth="113.0">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
@@ -96,7 +96,7 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </TextField>
-      <ComboBox fx:id="cmbItemCode" layoutX="173.0" layoutY="183.0" prefHeight="26.0" prefWidth="210.0" />
+      <ComboBox fx:id="cmbItemCode" layoutX="173.0" layoutY="183.0" onAction="#ItemCode_onAction" prefHeight="26.0" prefWidth="210.0" />
       <Button layoutX="586.0" layoutY="288.0" mnemonicParsing="false" onAction="#AddButtonPerform" prefHeight="39.0" prefWidth="114.0" text="Add">
          <font>
             <Font name="System Bold" size="18.0" />
