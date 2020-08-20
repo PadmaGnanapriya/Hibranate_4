@@ -1,7 +1,6 @@
 package controller;
 
-import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import model.Customer;
@@ -11,15 +10,12 @@ import model.OrderDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
@@ -36,7 +32,6 @@ public class OrderForm {
     public TextField txtOrderDate;
     public TextField txtCustomerName;
     public ComboBox cmbItemCode;
-    public Button AddCustomerPerform;
     public TextField txtTotal;
     public TableColumn colDescription;
     public TableColumn colQty;
@@ -45,10 +40,7 @@ public class OrderForm {
     public TableColumn colCode;
     public TableView myTable;
     public ComboBox cmbCustomerId;
-//
-//    public OrderForm(){
-//        loadAllCustomers();
-//    }
+
 
     private void genarateOrderDate() {
         Date date = new Date();
@@ -67,17 +59,14 @@ public class OrderForm {
 
     public void PlaceOrderPerform(ActionEvent actionEvent) {
         String orderId = txtOrderId.getText();
-//        String customerId = cmbCustomerId.getText();
         String description = txtDescription.getText();
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int quentityOnHand = Integer.parseInt(txtQuentityOnHand.getText());
         int qty = Integer.parseInt(txtQty.getText());
         String orderDate = txtOrderDate.getText();
         String customerName = txtCustomerName.getText();
-//        String itemCode = cmbItemCode.getText();
         ArrayList<OrderDetail> orderList = null;
 
-//        while(myTable.)
 
         String customerId=null;
         Order order=new Order(orderId,orderDate,customerId,orderList);
@@ -100,6 +89,10 @@ public class OrderForm {
     }
 
     public void CustomerID_onAction(ActionEvent actionEvent) {
+            String customerId = cmbCustomerId.getValue().toString();
+            Customer customer = CustomerController.searchCustomer(customerId);
+            txtCustomerName.setText(customer.getName());
+
 
     }
 
@@ -110,11 +103,21 @@ public class OrderForm {
         }
     }
 
+    private void loadAllItems(){
+        List<Item> items=ItemController.loadAllItems();
+        for (Item item : items) {
+            cmbItemCode.getItems().add(item.getCode());
+        }
+    }
+
     public void AddCustomerPerform(ActionEvent actionEvent) {
         //New button//This should be constructor
         genarateOrderDate();
 
         loadAllCustomers();
+        loadAllItems();
+
+
 
 //        Customer cus=new Customer("C002","Anjana","Kandy",85000);
 //        CustomerController.updateCustomer(cus);  //           work properly

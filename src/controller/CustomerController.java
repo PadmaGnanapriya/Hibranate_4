@@ -103,7 +103,6 @@ public class CustomerController {
         session.beginTransaction();
         Query query=session.createQuery("FROM Customer");
         List list = query.list();
-//        System.out.println(list);
         session.getTransaction().commit();
         return  list;
 
