@@ -66,27 +66,14 @@ public class OrderForm {
         int qty = Integer.parseInt(txtQty.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         double total = unitPrice * qty;
-
         int row = isAlreadyExist(cmbItemCode.getValue().toString());
 
         if (row == -1) {
-//            Object[] rowData = {cmbItemCode.getValue().toString(), txtDescription.getText(), qty, unitPrice, total};
-//            dtm.addRow(rowData);
-//            colDescription.setText(txtDescription.getText());
-//            colQty.setText(String.valueOf(qty));
-//            colUnitPrice.setText(String.valueOf(unitPrice));
-//            colTotal.setText(String.valueOf(total));
-//            colCode.setText(cmbItemCode.getValue().toString());
-//            myTable.setItems("SS");
-            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty,unitPrice,qty * unitPrice);
-//            OrderFromTable orderFromTablee =new OrderFromTable("D32","rr",222,23,32);
-//            myTable.getItems().add(orderFromTablee);
+            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty,unitPrice,total);
             myTable.getItems().add(orderFromTable);
-
         } else {
 //            qty += (int) dtm.getValueAt(row, 2);
 //            total = qty * unitPrice;
-//
 //            txtItemDetails.setValueAt(qty, row, 2);
 //            tblItemDetails.setValueAt(total, row, 4);
         }
@@ -103,6 +90,9 @@ public class OrderForm {
     }
 
     public void RomovePerform(ActionEvent actionEvent) {
+        ObservableList<OrderFromTable> selectedRows = myTable.getSelectionModel().getSelectedItems();
+        ArrayList<OrderFromTable> rows = new ArrayList<>(selectedRows);
+        rows.forEach(row -> myTable.getItems().remove(row));
     }
 
     public void PlaceOrderPerform(ActionEvent actionEvent) {
