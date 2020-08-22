@@ -1,12 +1,11 @@
 package controller;
 
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import model.Customer;
-import model.Item;
-import model.Orders;
-import model.OrderDetail;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -25,7 +24,6 @@ import java.util.List;
 
 public class OrderForm {
     public TextField txtOrderId;
-    public TextField txtCustomerId;
     public TextField txtDescription;
     public TextField txtUnitPrice;
     public TextField txtQuentityOnHand;
@@ -39,9 +37,24 @@ public class OrderForm {
     public TableColumn colUnitPrice;
     public TableColumn colTotal;
     public TableColumn colCode;
-    public TableView myTable;
+    public TableView<OrderFromTable> myTable;
     public ComboBox cmbCustomerId;
 
+    public void initialize() {
+
+
+        colDescription.setCellValueFactory(new PropertyValueFactory("description"));
+        colQty.setCellValueFactory(new PropertyValueFactory("qty"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory("price"));
+        colCode.setCellValueFactory(new PropertyValueFactory("itemCode"));
+        colTotal.setCellValueFactory(new PropertyValueFactory("total"));
+
+
+        genarateOrderDate();
+        loadAllCustomers();
+        loadAllItems();
+        genarateOrderId();
+    }
 
     private void genarateOrderDate() {
         Date date = new Date();
@@ -49,11 +62,7 @@ public class OrderForm {
         txtOrderDate.setText(dateFormat.format(date));
     }
 
-
-
     public void AddButtonPerform(ActionEvent actionEvent) {
-//        DefaultTableModel dtm = myTable.getDefacModel();
-//
         int qty = Integer.parseInt(txtQty.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         double total = unitPrice * qty;
@@ -63,15 +72,16 @@ public class OrderForm {
         if (row == -1) {
 //            Object[] rowData = {cmbItemCode.getValue().toString(), txtDescription.getText(), qty, unitPrice, total};
 //            dtm.addRow(rowData);
-            colDescription.setText(txtDescription.getText());
-            colQty.setText(String.valueOf(qty));
-            colUnitPrice.setText(String.valueOf(unitPrice));
-            colTotal.setText(String.valueOf(total));
-            colCode.setText(cmbItemCode.getValue().toString());
-
-
-
+//            colDescription.setText(txtDescription.getText());
+//            colQty.setText(String.valueOf(qty));
+//            colUnitPrice.setText(String.valueOf(unitPrice));
+//            colTotal.setText(String.valueOf(total));
+//            colCode.setText(cmbItemCode.getValue().toString());
 //            myTable.setItems("SS");
+            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty,unitPrice,qty * unitPrice);
+//            OrderFromTable orderFromTablee =new OrderFromTable("D32","rr",222,23,32);
+//            myTable.getItems().add(orderFromTablee);
+            myTable.getItems().add(orderFromTable);
 
         } else {
 //            qty += (int) dtm.getValueAt(row, 2);
@@ -142,34 +152,25 @@ public class OrderForm {
         for (Item item : items) {
             cmbItemCode.getItems().add(item.getCode());
         }
-//        List<Orders> orders = OrdersController.getAllOrder();
-//        for (Orders orders1 : orders) {
-//            cmbItemCode.getItems().add(orders1.getOrderId());
-////            System.out.println("Padme"+ orders1);
-////            System.out.println(order1);
-//        }
     }
 
     public void AddCustomerPerform(ActionEvent actionEvent) {
         //New button//This should be constructor
-        genarateOrderDate();
-
-        loadAllCustomers();
-        loadAllItems();
-        genarateOrderId();
-
-//
 
 
-//        Customer cus=new Customer("C002","Anjana","Kandy",85000);
-//        CustomerController.updateCustomer(cus);  //           work properly
+//        Item itm= new Item("111","Padme",33,34);
+//        // Item Code, Description,Qty, Unit price,
+//        myTable.getItems().add(itm);
+//        myTable.setItems((ObservableList) itm);
+;
 
-//        Customer cc= CustomerController.searchCustomer("C002");  // :- Anjana Kandy  ; work properly
 
-//        CustomerController.deleteCustomer("C004"); // work properly
 
-//
-//
+        //Adding data to the table
+//        ObservableList<String> list = FXCollections.observableArrayList();
+//        table.setItems(data);
+//        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//        table.getColumns().addAll(fileNameCol, pathCol, sizeCol, dateCol);
 
     }
 
