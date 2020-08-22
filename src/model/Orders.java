@@ -9,21 +9,21 @@ import java.util.ArrayList;
  */
 
 @Entity
-public class Order {
+public class Orders {
     @Id
     private String orderId;
     private String orderDate;
     private String customerId;
     private ArrayList<OrderDetail> orderDetailList;
 
-    public Order(String orderId, String orderDate, String customerId, ArrayList<OrderDetail> orderDetailList) {
+    public Orders(String orderId, String orderDate, String customerId, ArrayList<OrderDetail> orderDetailList) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.orderDetailList = orderDetailList;
     }
 
-    public Order() {
+    public Orders() {
     }
 
     public String getOrderId() {

@@ -67,13 +67,11 @@ public class CustomerController {
 //            System.out.println(customer.getName()+" "+customer.getAddress());
             session.getTransaction().commit();
             return customer;
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
 
     public static boolean deleteCustomer(String id){
         try {
@@ -105,7 +103,6 @@ public class CustomerController {
         List list = query.list();
         session.getTransaction().commit();
         return  list;
-
     }
 
 

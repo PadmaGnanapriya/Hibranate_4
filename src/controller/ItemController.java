@@ -87,7 +87,7 @@ public class ItemController {
 //        stm.setObject(2,orderDetail.getItemCode());
 //        return stm.executeUpdate()>0;
         Item item=searchItem(orderDetail.getItemCode());
-        item.setQtyOnHand(item.getQtyOnHand()-orderDetail.getOrderQty());
+        item.setQtyOnHand(item.getQtyOnHand()- orderDetail.getOrderQty());
         try {
             Configuration configuration = new Configuration();
             SessionFactory sessionFactory =

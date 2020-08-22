@@ -5,13 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import model.Customer;
 import model.Item;
-import model.Order;
+import model.Orders;
 import model.OrderDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +69,8 @@ public class OrderForm {
             colTotal.setText(String.valueOf(total));
             colCode.setText(cmbItemCode.getValue().toString());
 
+
+
 //            myTable.setItems("SS");
 
         } else {
@@ -104,21 +105,19 @@ public class OrderForm {
         String customerName = txtCustomerName.getText();
         ArrayList<OrderDetail> orderList = null;
 
-
         String customerId=null;
-        Order order=new Order(orderId,orderDate,customerId,orderList);
-
+        Orders orders =new Orders(orderId,orderDate,customerId,orderList);
         try{
             Configuration configuration = new Configuration();
             SessionFactory sessionFactory =
                     new Configuration()
                             .configure("hibernate.cfg.xml")
-                            .addAnnotatedClass(Order.class)
+                            .addAnnotatedClass(Orders.class)
                             .addAnnotatedClass(OrderDetail.class)
                             .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            session.save(order);
+            session.save(orders);
             session.getTransaction().commit();
         }catch (Exception ex){
             System.out.println(ex);
@@ -129,8 +128,6 @@ public class OrderForm {
             String customerId = cmbCustomerId.getValue().toString();
             Customer customer = CustomerController.searchCustomer(customerId);
             txtCustomerName.setText(customer.getName());
-
-
     }
 
     private void loadAllCustomers() {
@@ -145,6 +142,12 @@ public class OrderForm {
         for (Item item : items) {
             cmbItemCode.getItems().add(item.getCode());
         }
+//        List<Orders> orders = OrdersController.getAllOrder();
+//        for (Orders orders1 : orders) {
+//            cmbItemCode.getItems().add(orders1.getOrderId());
+////            System.out.println("Padme"+ orders1);
+////            System.out.println(order1);
+//        }
     }
 
     public void AddCustomerPerform(ActionEvent actionEvent) {
@@ -153,7 +156,9 @@ public class OrderForm {
 
         loadAllCustomers();
         loadAllItems();
+        genarateOrderId();
 
+//
 
 
 //        Customer cus=new Customer("C002","Anjana","Kandy",85000);
@@ -175,5 +180,11 @@ public class OrderForm {
         txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
         txtQuentityOnHand.setText(String.valueOf(item.getQtyOnHand()));
     }
+
+    private void genarateOrderId() {
+        String order_id= OrderDetailController.getLastOrderId();
+        txtOrderId.setText(order_id);
+    }
+
 
 }

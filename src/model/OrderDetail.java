@@ -2,15 +2,17 @@ package model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
  */
 
 @Entity
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     @Id
     private String orderId;
+    @Id
     private String itemCode;
     private int orderQty;
     private double unitPrice;
