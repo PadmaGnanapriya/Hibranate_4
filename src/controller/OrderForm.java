@@ -13,10 +13,9 @@ import org.hibernate.cfg.Configuration;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import static controller.OrdersController.addNewOrder;
 
 
 /**
@@ -67,24 +66,34 @@ public class OrderForm {
     public void AddButtonPerform(ActionEvent actionEvent) {
         int qty = Integer.parseInt(txtQty.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        double total = unitPrice * qty;
-        int row = isAlreadyExist(cmbItemCode.getValue().toString());
+        int priviousQty=0;
+//        double total = ;
 
-        if (row == -1) {
-            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty,unitPrice,total);
+        for(int i=0; i<myTable.getItems().size();i++){
+                   if(cmbItemCode.getValue().toString()==myTable.getItems().get(i).getItemCode()){
+                priviousQty=myTable.getItems().get(i).getQty();
+                myTable.getItems().remove(i);
+            }
+        }
+//        int row = isAlreadyExist(cmbItemCode.getValue().toString());
+
+//        if (row == -1) {
+            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty+priviousQty,unitPrice,unitPrice * (qty+priviousQty));
             myTable.getItems().add(orderFromTable);
             cmbItemCode.requestFocus();
 
-        } else {
-//            qty += (int) dtm.getValueAt(row, 2);
-//            total = qty * unitPrice;
-//            txtItemDetails.setValueAt(qty, row, 2);
-//            tblItemDetails.setValueAt(total, row, 4);
-        }
+//        } else {
+////            qty += (int) dtm.getValueAt(row, 2);
+////            total = qty * unitPrice;
+////            txtItemDetails.setValueAt(qty, row, 2);
+////            tblItemDetails.setValueAt(total, row, 4);
+//        }
         cmbItemCode.requestFocus();
     }
 
     private int isAlreadyExist(String toString) {
+
+//        cmbItemCode.getValue().toString()
         return -1;
     }
 
@@ -130,15 +139,16 @@ public class OrderForm {
             OrderDetail orderDetail=new OrderDetail(txtOrderId.getText(),itemCodeT,qtyT,unitPriceT);
             ItemController itemController=new ItemController();
             ItemController.updateStock(orderDetail);
-            OrderDetailController.addOrderDetail(orderDetail);
+            OrderDetailController orderDetailController=new OrderDetailController();
+            orderDetailController.addOrderDetail(orderDetail);
             fullTotal+= qtyT  * unitPriceT;
             txtTotal.setText(String.valueOf(fullTotal));
         }
-        /*
-        Orders orders=new Orders(txtOrderId.getText(),txtOrderDate.getText(),cmbCustomerId.getSelectionModel().toString(),(ArrayList)arrList);
+
+        Orders orders=new Orders(txtOrderId.getText(),txtOrderDate.getText(),cmbCustomerId.getSelectionModel().toString(), Collections.unmodifiableList(arrList));
         OrdersController ordersController=new OrdersController();
-        addNewOrder(orders);
-        */
+        ordersController.addNewOrder(orders);
+
     }
 
     public void CustomerID_onAction(ActionEvent actionEvent) {
@@ -178,7 +188,6 @@ public class OrderForm {
         String order_id= OrderDetailController.getLastOrderId();
         txtOrderId.setText(order_id);
     }
-
     public void EnterQtyTextField(ActionEvent actionEvent) {
         AddButton.requestFocus();
     }

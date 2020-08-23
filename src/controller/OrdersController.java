@@ -1,5 +1,6 @@
 package controller;
 
+import model.Customer;
 import model.OrderDetail;
 import model.Orders;
 import org.hibernate.Session;
@@ -24,13 +25,14 @@ public class OrdersController {
             SessionFactory sessionFactory =
                     new Configuration()
                             .configure("hibernate.cfg.xml")
-                            .addAnnotatedClass(OrderDetail.class)
+                            .addAnnotatedClass(Orders.class)
                             .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(orders);
             session.getTransaction().commit();
         }catch (Exception ex){
+            System.out.println("\n\n-------------------- \nOrder Controller details");
             System.out.println(ex);
         }
     }

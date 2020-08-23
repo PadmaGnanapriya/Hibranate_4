@@ -3,6 +3,7 @@ package model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
@@ -16,6 +17,7 @@ public class Orders {
     private String customerId;
     private ArrayList<OrderDetail> orderDetailList;
 
+
     public Orders(String orderId, String orderDate, String customerId, ArrayList<OrderDetail> orderDetailList) {
         this.orderId = orderId;
         this.orderDate = orderDate;
@@ -23,7 +25,7 @@ public class Orders {
         this.orderDetailList = orderDetailList;
     }
 
-    public Orders() {
+    public Orders(String text, String txtOrderDateText, String customerId, List<List<String>> arrList) {
     }
 
     public String getOrderId() {

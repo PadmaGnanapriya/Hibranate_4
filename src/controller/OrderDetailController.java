@@ -41,8 +41,10 @@ public class OrderDetailController {
             session.beginTransaction();
             session.save(orderDetail);
             session.getTransaction().commit();
+            System.out.println("Add orderDetail table");
         }catch (Exception ex){
             System.out.println(ex);
+            System.out.println("\n______________Add orderDetail table");
         }
     }
 }

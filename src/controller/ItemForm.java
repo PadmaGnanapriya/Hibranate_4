@@ -2,7 +2,6 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
-import model.Customer;
 import model.Item;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
