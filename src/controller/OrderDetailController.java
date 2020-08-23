@@ -1,14 +1,10 @@
 package controller;
 
-import model.Customer;
 import model.OrderDetail;
-import model.Orders;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-
-import java.util.List;
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
@@ -31,6 +27,22 @@ public class OrderDetailController {
             System.out.println("Error in Oderdetail \n"+ex);
             return "D001";
         }
+    }
 
+    public static void addOrderDetail(OrderDetail orderDetail){
+        try {
+            Configuration configuration = new Configuration();
+            SessionFactory sessionFactory =
+                    new Configuration()
+                            .configure("hibernate.cfg.xml")
+                            .addAnnotatedClass(OrderDetail.class)
+                            .buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(orderDetail);
+            session.getTransaction().commit();
+        }catch (Exception ex){
+            System.out.println(ex);
+        }
     }
 }
