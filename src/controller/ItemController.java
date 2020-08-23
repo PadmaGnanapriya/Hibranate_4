@@ -34,7 +34,6 @@ public class ItemController {
             System.out.println(ex);
             return false;
         }
-
     }
 
     public static List loadAllItems()  {
@@ -72,20 +71,7 @@ public class ItemController {
         }
     }
 
-//    public static boolean updateStock(ArrayList<OrderDetail> orderDetailList) throws ClassNotFoundException, SQLException {
-//        for (OrderDetail orderDetail : orderDetailList) {
-//            boolean isUpdate=updateStock(orderDetail);
-//            if(!isUpdate){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
     public static boolean updateStock(OrderDetail orderDetail){
-//        PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement("Update Item set qtyOnHand=qtyOnHand-? where code=?");
-//        stm.setObject(1,orderDetail.getOrderQty());
-//        stm.setObject(2,orderDetail.getItemCode());
-//        return stm.executeUpdate()>0;
         Item item=searchItem(orderDetail.getItemCode());
         item.setQtyOnHand(item.getQtyOnHand()- orderDetail.getOrderQty());
         try {

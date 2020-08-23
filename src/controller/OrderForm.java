@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static controller.OrdersController.addNewOrder;
+
 
 /**
  * Created by Padma Gnanapiya (SE/2017/014)
@@ -39,6 +41,7 @@ public class OrderForm {
     public TableColumn colCode;
     public TableView<OrderFromTable> myTable;
     public ComboBox cmbCustomerId;
+    public Button AddButton;
 
     public void initialize() {
 
@@ -71,6 +74,7 @@ public class OrderForm {
         if (row == -1) {
             OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty,unitPrice,total);
             myTable.getItems().add(orderFromTable);
+            cmbItemCode.requestFocus();
         } else {
 //            qty += (int) dtm.getValueAt(row, 2);
 //            total = qty * unitPrice;
@@ -79,13 +83,14 @@ public class OrderForm {
         }
 
         cmbItemCode.requestFocus();
-        calculateTotal();
-    }
 
-    private void calculateTotal() {
     }
+//
+//    private void calculateTotal() {
+//    }
 
     private int isAlreadyExist(String toString) {
+//        myTable.getSelectionModel().getTableView(toString);
         return -1;
     }
 
@@ -103,25 +108,72 @@ public class OrderForm {
         int qty = Integer.parseInt(txtQty.getText());
         String orderDate = txtOrderDate.getText();
         String customerName = txtCustomerName.getText();
-        ArrayList<OrderDetail> orderList = null;
 
-        String customerId=null;
-        Orders orders =new Orders(orderId,orderDate,customerId,orderList);
-        try{
-            Configuration configuration = new Configuration();
-            SessionFactory sessionFactory =
-                    new Configuration()
-                            .configure("hibernate.cfg.xml")
-                            .addAnnotatedClass(Orders.class)
-                            .addAnnotatedClass(OrderDetail.class)
-                            .buildSessionFactory();
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.save(orders);
-            session.getTransaction().commit();
-        }catch (Exception ex){
-            System.out.println(ex);
+        OrderFromTable orderFromTable=new OrderFromTable();
+        List<List<String>> arrList=new ArrayList<>();
+
+        for(int i=0; i<myTable.getItems().size();i++){
+            orderFromTable=myTable.getItems().get(i);
+            arrList.add(new ArrayList<>());
+            arrList.get(i).add(orderFromTable.getItemCode());
+            arrList.get(i).add(orderFromTable.getDescription());
+            arrList.get(i).add(String.valueOf(orderFromTable.getQty()));
+            arrList.get(i).add(String.valueOf(orderFromTable.getPrice()));
         }
+        String itemCodeT=null;
+        String descriptionT=null;
+        int qtyT=0;
+        double unitPriceT=0;
+
+        for(int i=0; i<arrList.size();i++){
+            for(int j=0;j<arrList.get(i).size();j++){
+                itemCodeT=arrList.get(i).get(0);
+                descriptionT=arrList.get(i).get(1);
+                qtyT= Integer.parseInt(arrList.get(i).get(2));
+                unitPriceT= Double.parseDouble(arrList.get(i).get(3));
+            }
+            System.out.println("00000000000000000000000000000");
+            System.out.println(itemCodeT+"-Item, "+descriptionT+"-discription, "+qtyT+"-qty"+unitPriceT);
+            System.out.println("00000000000000000000000000000");
+            OrderDetail orderDetail=new OrderDetail(txtOrderId.getText(),itemCodeT,qtyT,unitPriceT);
+            ItemController itemController=new ItemController();
+            ItemController.updateStock(orderDetail);
+        }
+        Orders orders=new Orders(txtOrderId.getText(),txtOrderDate.getText(),cmbCustomerId.getSelectionModel().toString(),(ArrayList)arrList);
+        OrdersController ordersController=new OrdersController();
+        addNewOrder(orders);
+
+//        ArrayList <OrderDetail> orderDetailList=new ArrayList<>();
+//        for (int i = 0; i < myTable.getItems().size(); i++) {
+//            String itemCode=(String) myTable.getValueAt(i, 0);
+//            int orderQty=(int) dtm.getValueAt(i, 2);
+//            double unitPrice=(double) dtm.getValueAt(i, 3);
+//            OrderDetail orderDetail=new OrderDetail(orderId, itemCode, orderQty, unitPrice);
+//            orderDetailList.add(orderDetail);
+//        }
+//        OrderDetail de=new OrderDetail("D0022","sds",23,10);
+//        orderDetailList.add(de);
+//        OrderDetail de4=new OrderDetail("D0024","qqq",43,20);
+//        orderDetailList.add(de4);
+
+
+//        String customerId=cmbCustomerId.getSelectionModel().toString();
+//        Orders orders =new Orders(orderId,orderDate,customerId,orderDetailList);
+//        try{
+//            Configuration configuration = new Configuration();
+//            SessionFactory sessionFactory =
+//                    new Configuration()
+//                            .configure("hibernate.cfg.xml")
+//                            .addAnnotatedClass(Orders.class)
+////                            .addAnnotatedClass(OrderDetail.class)
+//                            .buildSessionFactory();
+//            Session session = sessionFactory.openSession();
+//            session.beginTransaction();
+//            session.save(orders);
+//            session.getTransaction().commit();
+//        }catch (Exception ex){
+//            System.out.println(ex);
+//        }
     }
 
     public void CustomerID_onAction(ActionEvent actionEvent) {
@@ -147,14 +199,10 @@ public class OrderForm {
     public void AddCustomerPerform(ActionEvent actionEvent) {
         //New button//This should be constructor
 
-
 //        Item itm= new Item("111","Padme",33,34);
 //        // Item Code, Description,Qty, Unit price,
 //        myTable.getItems().add(itm);
 //        myTable.setItems((ObservableList) itm);
-;
-
-
 
         //Adding data to the table
 //        ObservableList<String> list = FXCollections.observableArrayList();
@@ -170,6 +218,10 @@ public class OrderForm {
         txtDescription.setText(item.getDescription());
         txtUnitPrice.setText(String.valueOf(item.getUnitPrice()));
         txtQuentityOnHand.setText(String.valueOf(item.getQtyOnHand()));
+
+        txtQty.setText("");
+        txtQty.requestFocus();
+
     }
 
     private void genarateOrderId() {
@@ -178,4 +230,7 @@ public class OrderForm {
     }
 
 
+    public void EnterQtyTextField(ActionEvent actionEvent) {
+        AddButton.requestFocus();
+    }
 }
