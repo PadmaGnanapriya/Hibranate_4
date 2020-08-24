@@ -6,16 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -59,7 +56,7 @@ public class OrderForm {
 
     private void genarateOrderDate() {
         Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         txtOrderDate.setText(dateFormat.format(date));
     }
 
@@ -75,25 +72,14 @@ public class OrderForm {
                 myTable.getItems().remove(i);
             }
         }
-//        int row = isAlreadyExist(cmbItemCode.getValue().toString());
-
-//        if (row == -1) {
-            OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty+priviousQty,unitPrice,unitPrice * (qty+priviousQty));
-            myTable.getItems().add(orderFromTable);
-            cmbItemCode.requestFocus();
-
-//        } else {
-////            qty += (int) dtm.getValueAt(row, 2);
-////            total = qty * unitPrice;
-////            txtItemDetails.setValueAt(qty, row, 2);
-////            tblItemDetails.setValueAt(total, row, 4);
-//        }
+//
+        OrderFromTable orderFromTable =new OrderFromTable(cmbItemCode.getValue().toString(),txtDescription.getText(),qty+priviousQty,unitPrice,unitPrice * (qty+priviousQty));
+        myTable.getItems().add(orderFromTable);
+        cmbItemCode.requestFocus();
         cmbItemCode.requestFocus();
     }
 
     private int isAlreadyExist(String toString) {
-
-//        cmbItemCode.getValue().toString()
         return -1;
     }
 
@@ -103,7 +89,7 @@ public class OrderForm {
         rows.forEach(row -> myTable.getItems().remove(row));
     }
 
-    public void PlaceOrderPerform(ActionEvent actionEvent) {
+    public void PlaceOrderPerform(ActionEvent actionEvent) throws InterruptedException {
         String orderId = txtOrderId.getText();
         String description = txtDescription.getText();
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
@@ -149,6 +135,24 @@ public class OrderForm {
         OrdersController ordersController=new OrdersController();
         ordersController.addNewOrder(orders);
 
+
+        TimeUnit.SECONDS.sleep(3);
+        cmbCustomerId.getSelectionModel().clearSelection();
+        cmbItemCode.getSelectionModel().clearSelection();
+        txtCustomerName.setText("");
+        txtDescription.setText("");
+        txtTotal.setText("");
+        txtQty.setText("");
+        txtUnitPrice.setText("");
+        txtQuentityOnHand.setText("");
+        for ( int i = 0; i<myTable.getItems().size(); i++) {
+            myTable.getItems().clear();
+        }
+        genarateOrderId();
+        cmbCustomerId.requestFocus();
+
+//        cmbCustomerId.getItems.clear();
+//        cmbCustomerId.selectionModelProperty().;
     }
 
     public void CustomerID_onAction(ActionEvent actionEvent) {
